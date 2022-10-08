@@ -1,28 +1,28 @@
-names = matrix(c(1,4,8,5,7,1),ncol=2) #A,B,C ÁÂÇ¥ ÀÔ·Â
-namesx = matrix(names[,1]) # names A,B,C ÀÇ XÁÂÇ¥
-namesy = matrix(names[,2]) # names A,B,C ÀÇ yÁÂÇ¥
+names = matrix(c(1,4,8,5,7,1),ncol=2) #A,B,C ì¢Œí‘œ ì…ë ¥
+namesx = matrix(names[,1]) # names A,B,C ì˜ Xì¢Œí‘œ
+namesy = matrix(names[,2]) # names A,B,C ì˜ yì¢Œí‘œ
 
 
-distance = function(x,y,names){ # »õ·Î¿î ÇÔ¼ö ¸¸µé±â
-  dist_mat= matrix(0,3,2) # Ãâ·Â °ª ³ÖÀ» matrix
+distance = function(x,y,names){ # ìƒˆë¡œìš´ í•¨ìˆ˜ ë§Œë“¤ê¸°
+  dist_mat= matrix(0,3,2) # ì¶œë ¥ ê°’ ë„£ì„ matrix
   for (i in 1:3) {
-    temp = matrix(c(abs(x-namesx))+c(abs(y-namesy))) # ¸ÇÇÏÅº°Å¸® °ø½Ä abs = Àı´ñ°ª
+    temp = matrix(c(abs(x-namesx))+c(abs(y-namesy))) # ë§¨í•˜íƒ„ê±°ë¦¬ ê³µì‹ abs = ì ˆëŒ“ê°’
     dist_mat = temp
   }
-  return(dist_mat) #matrix¿¡ ÀúÀå ÈÄ ´Ù½Ã ½ÃÀÛ
+  return(dist_mat) #matrixì— ì €ì¥ í›„ ë‹¤ì‹œ ì‹œì‘
 }
 
-distance(5,7,) # »õ·Ó°Ô ¹ß»ıµÈ ÁÂÇ¥ »ı¼º
-a = c(distance(5,7,)) # a¶ó°í »õ·Ó°Ô Á¤ÀÇÈÄ if¹® 
+distance(5,7,) # ìƒˆë¡­ê²Œ ë°œìƒëœ ì¢Œí‘œ ìƒì„±
+a = c(distance(5,7,)) # aë¼ê³  ìƒˆë¡­ê²Œ ì •ì˜í›„ ifë¬¸ 
 
-if (a[1]<=a[2] & a[1]<=a[3]){ #°Å¸®°¡ °°´Ù¸é ¹üÁËÀÌ·ÂÀÌ ¸¹Àº »ç¶÷ÀÌ ¹üÀÎÀ¸·Î ¼³Á¤
-  result = "A°¡ ¹üÀÎ"
+if (a[1]<=a[2] & a[1]<=a[3]){ #ê±°ë¦¬ê°€ ê°™ë‹¤ë©´ ë²”ì£„ì´ë ¥ì´ ë§ì€ ì‚¬ëŒì´ ë²”ì¸ìœ¼ë¡œ ì„¤ì •
+  result = "Aê°€ ë²”ì¸"
 }else if(a[2]<a[1] & a[2]<a[3]){
-  result = "B°¡ ¹üÀÎ"
+  result = "Bê°€ ë²”ì¸"
 }else {
-  result = "C°¡ ¹üÀÎ"
+  result = "Cê°€ ë²”ì¸"
 }
 
 print(result)
 
-#distance¿Í a ¿¡ »õ·Î¿î ÁÂÇ¥ °ª µ¿ÀÏÇÏ°Ô ³Ö°í ctrl + alt + RÀ¸·Î½ÇÇàÇÏ¸é ¹üÀÎÀÌ Ãâ·ÂµË´Ï´Ù. 
+#distanceì™€ a ì— ìƒˆë¡œìš´ ì¢Œí‘œ ê°’ ë™ì¼í•˜ê²Œ ë„£ê³  ctrl + alt + Rìœ¼ë¡œì‹¤í–‰í•˜ë©´ ë²”ì¸ì´ ì¶œë ¥ë©ë‹ˆë‹¤
