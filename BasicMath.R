@@ -59,4 +59,5 @@ x = runif(n,a,b)
 y = runif(n,c,d)
 temp = sum(y<f(x))/n
 16*temp
-  
+
+
