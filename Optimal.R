@@ -1,8 +1,10 @@
 # 최적화 1
+
 newton_raphson=function(f, fp, init, tol = 1e-9,max =100){ # tol은 0에 가까운 값이나 0은 아님  
   iter = 0 # iteration 시작,
   oldx = init  # x0를 의미
   x = oldx + 10*tol  #밑에 x-oldx가 tol 보다 커야되는 조건
+  fp = D(expression(f),"x")
   
   #converge
   while(abs(x-oldx)>tol){## 수렴할때까지 run
@@ -18,6 +20,13 @@ newton_raphson=function(f, fp, init, tol = 1e-9,max =100){ # tol은 0에 가까�
   
   return(paste("solution is", x))      
 }
+
+fx = function(x) exp(-x)+x
+#library(Deriv)
+
+#fp = D(expression(exp(-x)+x),"x")
+
+newton_raphson(fx,10, init = 5)
 
 secant = function(f,init,tol = 1e-9,max = 100){
   i = 0
@@ -40,7 +49,9 @@ secant = function(f,init,tol = 1e-9,max = 100){
   return(x)
 }
 
+fx = function(x) exp(-x)+x
 
+secant(fx,10)
 
 # 최적화2
 

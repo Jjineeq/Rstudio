@@ -50,6 +50,6 @@ print("--------------------------------------------")
 mat = matrix(c(5,25,35,25,166,175,35,175,325), ncol = 3)
 mat
 eanalysis = eigen(mat,symmetric =T)
-eanalysis
+eanalysis  
 prod(eanalysis$value) # = det(mat)
 det(mat)
