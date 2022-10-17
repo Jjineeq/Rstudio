@@ -31,8 +31,8 @@ newton_raphson(fx,10, init = 5)
 secant = function(f,init,tol = 1e-9,max = 100){
   i = 0
   oldx = init
-  oldfx = f(init)                                                #초기값에 따른 y값
-  x = oldx +10*tol                                            # 밑에 조건 참고
+  oldfx = f(init)              #초기값에 따른 y값
+  x = oldx +10*tol             # 밑에 조건 참고
   
   # convergence
   while(abs(x-oldx)>tol){
