@@ -66,7 +66,7 @@ fd = function(x) 0.25 * (4 * x^3) + 3 * x^2 - 1
 # 미분식을 활용 function으로 다시 만듬
 
 Res = g_desc(fd,-1)
-plot(fd,-5,2)
+curve(fd,-5,2)
 abline(v=c(-1), lty =2, col ="blue")
 abline(v=c(Res), lty =2, col ="red")
 
@@ -140,7 +140,7 @@ hessian(func, c(1,2))
 
 print("----------------------")
 
-install.packages("numDeriv")
+#install.packages("numDeriv")
 
 library(numDeriv)
 
@@ -164,7 +164,7 @@ hess = imhessian(im)
 plot(hess)
 
 print("--------------------------------")
-install.packages("plot3D")
+#install.packages("plot3D")
 library(plot3D)
 
 rastrigin = function(x1,x2){20+x1^2 + x2^2 -10*(cos(2*pi*x1)+cos(2*pi*x2))}
@@ -177,7 +177,7 @@ persp3D(x1,x2,f, theta = 50, phi=20)
 
 print("------------------------------------")
 
-install.packages("GA")
+#install.packages("GA")
 library(GA) # GA 라이브러리 가져오기
 Rastrigin = function(x1,x2){20+x1^2 + x2^2 -10*(cos(2*pi*x1)+cos(2*pi*x2))} # rastrigin 함수
 x1 = seq(-5,5,by = 0.1)
