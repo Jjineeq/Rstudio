@@ -14,7 +14,7 @@ newton <- function(f, tol = 1e-7, x0 = 1, N = 300){
   return(p[1:(i - 1)])
 }
 
-f = function(x) x^3+2
+f = function(x) x^5+7*x^3+2
 
 newton(f,x0=2)
 
