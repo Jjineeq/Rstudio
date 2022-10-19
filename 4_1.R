@@ -10,7 +10,7 @@ fd(f,2,0.00000001)
 
 print("------------------------------------")
 
-fxyz = expression(x^5-1/x+cos(x)^x)
+fxyz = expression(x^5-1/x+cos(x)^z)
 
 exp = deriv(fxyz, c("x", "y", "z"))
 exp

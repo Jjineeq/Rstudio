@@ -88,17 +88,43 @@ abline(v=c(res), lty =2, col ="red")
 
 print("--------------------")
 
+# 교수님 code
 
-# f = function(x) 0.25*x^4+x^3-x-1
-# plot(f,main="f(x) = 0.25*x^4+x^3-x-1",xlim =c(-5,2),ylim = c(-5,5))
-# abline(v=c(-1), lty =2, col ="blue")
-# abline(v=c(Res), lty =2, col ="red")
-# 
-# res = g_desc(fd,2)
-# abline(v=c(2), lty =2, col ="blue")
-# abline(v=c(res), lty =2, col ="red")
+f = readline(prompt = "function? ")
 
-print("-----------------------")
+f = parse(text = f)
+f
+class(f)
+fd = D(f,"x")
+fd
+
+g_desc1 = function(fp, x, h = 1e-2, tol=1e-4, m = 1e3){
+  iter = 0
+  oldx = x
+  x = x -h*fp(x)
+  while (abs(x-oldx)>tol){
+    iter = iter +1
+    if (iter>m) stop("max iteration")
+    oldx = x
+    x = x-h*fp(x)
+  }
+  return (x)
+}
+
+res = g_desc1(fd,-1)
+res
+res2  = g_desc1(fd,-10)
+res2
+
+
+f = function(x) 0.2*x^4+x^3-x-1
+curve(f,-5,2)
+abline(v = c(res))
+res = g_desc1(fd,2)
+res
+abline(v = c(res))
+
+print("============================================")
 
 x <- seq(-5, 5, length= 100)
 y <- x
@@ -114,10 +140,10 @@ g_bi = function(fp,x,h=1e-2, tol = 1e-4, m=1e3){
   oldx = x
   x = x -h*fp(x) # initial gradient만큼 이동
   b = x-oldx 
-  vecnorm = sqrt(sum(b^2)) # 벡터놈 정의
+  vecnorm = sqrt(sum(b^2)) # 벡터놈 정의 (2차원거리 = norm) 
   
   
-  while ((vecnorm)>tol){ # 다변수에서는 이동량을 벡터놈으로 정의
+  while ((vecnorm)>tol){ # 다변수에서는 이동량을 벡터놈으로 정의 / 수렴한건지 확인
     iter = iter +1
     if (iter > m) return(x) # 수렴횟수보다 넘어서면 결과값 산출
     oldx = x
@@ -133,6 +159,9 @@ fp = function(x){  ##  다변수미분을 위한 방정식 셋팅 (전장의 식
 }
 
 g_bi(fp, c(0,0),m=1000) # 수렴횟수를 1000번으로 제한 , 결과는 ?
+
+
+fp(c(1,0.5))
 
 print("---------------------")
 
@@ -153,7 +182,7 @@ print("----------------------")
 
 #install.packages("numDeriv")
 
-library(numDeriv)
+#library(numDeriv)
 
 f <- function(x) {c(x[1]^2 + x[2]^2 - 1, sin(pi*x[1]/2) + x[2]^3)}
 
