@@ -12,8 +12,8 @@ distance = function(x,y,names){ # 새로운 함수 만들기
   return(dist_mat) #matrix에 저장 후 다시 시작
 }
 
-distance(5,7,) # 새롭게 발생된 좌표 생성
-a = c(distance(5,7,)) # a라고 새롭게 정의후 if문 
+distance(1,2,) # 새롭게 발생된 좌표 생성
+a = c(distance(1,2,)) # a라고 새롭게 정의후 if문 
 
 if (a[1]<=a[2] & a[1]<=a[3]){ #거리가 같다면 범죄이력이 많은 사람이 범인으로 설정
   result = "A가 범인"
