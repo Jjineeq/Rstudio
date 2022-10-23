@@ -53,3 +53,6 @@ eanalysis = eigen(mat,symmetric =T)
 eanalysis  
 prod(eanalysis$value) # = det(mat)
 det(mat)
+mat1 = matrix(c(-0.09785612,-0.53931478,-0.83639928,-0.03883037,-0.83772380,0.54471188,0.99444275,-0.08578109,-0.06103460),ncol=3)
+mat1
+det(mat1)
