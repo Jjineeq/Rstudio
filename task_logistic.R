@@ -1,15 +1,36 @@
-data = read.csv("C:/Users/User/Desktop/The_salinity_of_the_Nakdonggang_River.csv")
-data = data[0:3]
-data
-ncol(data)
+library(plyr)
 
-log <- function(x){
-  i = 0
-  k = 0
-  for (i in ncol(data)+1) {
-    fx = 1/(1+exp(k+i*x.format(i)))
-    print(fx)
-  }
+data = read.csv("C:/Users/jangs/Desktop/Dataset/coin_data.csv")
+data
+
+names(data)[1] = c("weight")
+data
+
+summary(data) #na 값은 없음 따로 drop 안해도 됨
+
+logistic = glm(defective ~ speed + distance + real_weight + visibility , family = binomial, data = data)
+
+logistic
+
+#glm.fit
+
+summary(logistic)
+
+#########
+
+logistic.model = step(logistic,direction = "backward")
+summary(logistic.model)
+
+
+#confint(logistic)
+
+Odd = function(x, digits = 2){
+  suppressMessages(a = confint(x))
+  logistic = data.frame(exp(coef(x)),exp(a))
+  logistic = round(logistic, digits)
+  logistic = cblind(logistic, round(summary(x)$coefficient[,4],3))
+  colnames(result) = c("OR","2.5%","97.5%","p")
+  result
 }
 
-
+Odd(logistic)
