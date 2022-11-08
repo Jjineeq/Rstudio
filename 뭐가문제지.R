@@ -1,4 +1,6 @@
-df = read.csv("C:/Users/jangs/Social_Network_Ads.csv")# csv파일 read
+library(ggplot2)
+
+df = read.csv("C:/Users/user/Desktop/Social_Network_Ads.csv")# csv파일 read
 
 df
 
@@ -11,9 +13,9 @@ df$Gender = as.numeric(df$Gender)
 a = 0
 b = 0
 
-rate = 2
+rate = 0.1
 
-epochs = 4000
+epochs = 50000
 
 sigmoid = function(x){
   return(1/(1+exp(-x)))
@@ -33,42 +35,25 @@ for (i in 1:4000) {
   }
 }
 
-x_data
+plot(a)
+plot(b)
+a = as.data.frame(a)
+b = as.data.frame(b)
+k = data.frame(a,b)
+names(k) = c('x','y')
+k
+plot(k)
+ggplot(k,aes(x=x,y=y)) + geom_point()
+ggplot(k,aes(x=x,y=y)) + geom_point() + stat_smooth()
+
 a
 b
-a = as.data.frame(a)
-b = as.data.frame(b)
+sigmoid(k)
 
-plot(a)
-plot(b)
+plot(k)
 
-typeof(x_data)
-x_data = as.data.frame(x_data)
-
-x = transform(x_data[1]) 
-plot(1:400,for(i in 1:400) return(print(sigmoid(a*i+b))))
-
-sigmoid(a*400+b)
-
-k = for(i in 1:400){
-  return(sigmoid(a*i+b))
-} 
-
-plot(1:400,for(i in 1:400)sigmoid(a*400+b))
-
-plot
-
-nrow(sigmoid(a*2+b))
-ncol(sigmoid(a*2+b))
-plot(1:400,sigmoid(a*2+b))
-
-for(i in 1:400)print(sigmoid(a*400+b))
-
-sigmoid(a*1+b)
-a = as.data.frame(a)
-b = as.data.frame(b)
-typeof(a)
-typeof(b)
-
-plot(a)
-plot(b)
+t = sigmoid(a)
+z = data.frame(a,t)
+names(z) = c('x','y')
+plot(z)
+ggplot(z,aes(x=x,y=y)) + geom_point() + stat_function(fun = sigmoid)
