@@ -1,7 +1,7 @@
 library(ggplot2)
 library(caret) #min max scaling 
 
-df = read.csv("C:/Users/User/Desktop/Social_Network_Ads.csv")# csv파일 read
+df = read.csv("C:/Users/jangs/Social_Network_Ads.csv")# csv파일 read
 
 df
 
