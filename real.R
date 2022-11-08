@@ -19,20 +19,18 @@ df = df[2:5]
 df
 df$Gender = as.numeric(df$Gender)
 
-z = df[1:4]
-z = as.data.frame(z)
-typeof(z)
+z = as.data.frame(df[1:4])
 z
 
-beta0 = sample(0:1)
+beta0 = sample(0:1,1)
 beta1 = sample(0:1,1)
 beta2 = sample(0:1,1)
 beta3 = sample(0:1,1)
 w = c(beta1,beta2,beta3)
 w
-z = z %>% mutate(cal = (beta0+beta1*Gender+ beta2*Age + beta3*EstimatedSalary))
+z = z %>% mutate(cal = (beta0 + beta1*Gender + beta2*Age + beta3*EstimatedSalary))
 z = as.data.frame(z)
-
+z
 
 sigmoid = function(z){
   return(1/(1+exp(-z)))
@@ -40,6 +38,7 @@ sigmoid = function(z){
 
 q = matrix(0, nrow(df), 1)
 q # return y값
+nrow(z)
 
 cost = function(z){
   for (i in 1:nrow(z)) {
@@ -52,9 +51,11 @@ cost = function(z){
       # return(q[i])
     }
   }
+  print(q)
 }
 
 cost(z)
+
 
 g_desc = function(fp,x,h=1e-2, tol = 1e-4, m=1e3){
   iter = 0

@@ -1,6 +1,7 @@
 library(ggplot2)
+library(caret) #min max scaling 
 
-df = read.csv("C:/Users/user/Desktop/Social_Network_Ads.csv")# csv파일 read
+df = read.csv("C:/Users/User/Desktop/Social_Network_Ads.csv")# csv파일 read
 
 df
 
@@ -10,12 +11,12 @@ df = df[2:5]
 df
 df$Gender = as.numeric(df$Gender)
 
-a = 0
-b = 0
-
-rate = 0.1
-
-epochs = 50000
+#min-max scaling
+process = preProcess(as.data.frame(df[3]), method = c("range"))
+min_max = predict(process, as.data.frame(df[3]))
+min_max
+df$EstimatedSalary = min_max[1]
+df
 
 sigmoid = function(x){
   return(1/(1+exp(-x)))
@@ -23,6 +24,13 @@ sigmoid = function(x){
 
 x_data = df[3]
 y_data = df[4]
+
+a = 0
+b = 0
+
+rate = 0.1
+
+epochs = 50000
 
 for (i in 1:4000) {
   a_difference1 = x_data*(sigmoid(a*x_data+b)-y_data)
@@ -46,14 +54,28 @@ plot(k)
 ggplot(k,aes(x=x,y=y)) + geom_point()
 ggplot(k,aes(x=x,y=y)) + geom_point() + stat_smooth()
 
+x_data # 400*1
 a
+
+v = as.matrix(x_data)%*%t(as.matrix(a))
+v[,2]
 b
-sigmoid(k)
 
 plot(k)
 
 t = sigmoid(a)
 z = data.frame(a,t)
 names(z) = c('x','y')
+
+finish = function(z){
+  for (i in 1:400) {
+    if (z[i,2]>0.5) {
+      result = (z[i,2]=1)
+    }else result = (z[i,2]=0)
+  }
+}
+
+finish(z)
+
 plot(z)
 ggplot(z,aes(x=x,y=y)) + geom_point() + stat_function(fun = sigmoid)
