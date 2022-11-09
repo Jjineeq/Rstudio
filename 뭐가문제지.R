@@ -1,7 +1,6 @@
 library(ggplot2)
-library(caret) #min max scaling 
 
-df = read.csv("C:/Users/jangs/Social_Network_Ads.csv")# csv파일 read
+df = read.csv("C:/Users/User/Desktop/Social_Network_Ads.csv")# csv파일 read
 
 df
 
@@ -11,11 +10,12 @@ df = df[2:5]
 df
 df$Gender = as.numeric(df$Gender)
 
-#min-max scaling
-process = preProcess(as.data.frame(df[3]), method = c("range"))
-min_max = predict(process, as.data.frame(df[3]))
-min_max
-df$EstimatedSalary = min_max[1]
+# min-max scaling
+normalize = function(x){
+  return((x-min(x))/(max(x)-min(x)))
+}
+df[2]=normalize(df[2])
+df[3]=normalize(df[3])
 df
 
 sigmoid = function(x){
@@ -24,7 +24,7 @@ sigmoid = function(x){
 
 x_data = df[3]
 y_data = df[4]
-
+x_data
 a = 0
 b = 0
 
@@ -50,9 +50,6 @@ b = as.data.frame(b)
 k = data.frame(a,b)
 names(k) = c('x','y')
 k
-plot(k)
-ggplot(k,aes(x=x,y=y)) + geom_point()
-ggplot(k,aes(x=x,y=y)) + geom_point() + stat_smooth()
 
 x_data # 400*1
 a
@@ -76,6 +73,18 @@ finish = function(z){
 }
 
 finish(z)
-
+z[400,2]
+pred = function(x){
+  if (x>0.5){
+    return(1)
+  }else{
+    return(0)
+  }
+}
+for (i in 1:400) {
+  z[i,2] = pred(z[i,2])
+}
+z[2]
 plot(z)
 ggplot(z,aes(x=x,y=y)) + geom_point() + stat_function(fun = sigmoid)
+q
