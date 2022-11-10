@@ -25,6 +25,7 @@ sigmoid = function(x){
 x_data = df[3]
 y_data = df[4]
 x_data
+
 a = 0
 b = 0
 
@@ -55,25 +56,16 @@ x_data # 400*1
 a
 
 v = as.matrix(x_data)%*%t(as.matrix(a))
-v[,2]
-b
+v
+v = v[,1]
 
-plot(k)
 
-t = sigmoid(a)
+r = sigmoid(v) + b
+r
 z = data.frame(a,t)
 names(z) = c('x','y')
 
-finish = function(z){
-  for (i in 1:400) {
-    if (z[i,2]>0.5) {
-      result = (z[i,2]=1)
-    }else result = (z[i,2]=0)
-  }
-}
-
-finish(z)
-z[400,2]
+plot(z)
 pred = function(x){
   if (x>0.5){
     return(1)
@@ -88,3 +80,4 @@ z[2]
 plot(z)
 ggplot(z,aes(x=x,y=y)) + geom_point() + stat_function(fun = sigmoid)
 q
+
