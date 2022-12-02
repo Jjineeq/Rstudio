@@ -1,6 +1,6 @@
 library(pracma)
 
-t_squre = function(trdat, tedat,alpha){
+t_square = function(trdat, tedat,alpha){
   obs = nrow(trdat)
   dim = ncol(trdat)
   mu = colMeans(trdat)
@@ -50,6 +50,3 @@ k
 # alpha 값에 따른 beta 값 -> 반비례 관계 그래프 그리기
 # 적은 알파로 좋은 알파 값 찾기
 
-for (i in 1;) {
-  
-}
