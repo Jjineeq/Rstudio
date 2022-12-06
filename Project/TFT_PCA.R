@@ -1,29 +1,23 @@
 ###################
 ##  TFT PCA분석  ##
 ###################
+install_github("devtools")
 
+library(devtools)
+install_github("vqv/ggbiplot")
+library(ggbiplot)
+library(corrplot)
 
 df = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph1.csv",header = T, fileEncoding = 'CP949')
 
 head(df)
 
-
-# sensor 값 numeric으로 변경
-# 안써도 코드 잘 돌아감
-# for(i in 8:size[2]-1){
-#   
-#   imsi = as.numeric(df[,i]);   
-#   
-#   imsi[is.na(imsi)] <- 0     #해당 열에서 NA 값이 있을 경우 0으로 변환
-#   
-#   df[,i] <- imsi;
-#   
-# }
-
 df_test = df[,8:49] # PCA set
 df_test2 = df[,8:49] # Normalization PCA set
 
 cor(df_test) # 상관관계
+corrplot(cor(df_test))
+corrplot.mixed(cor(df_test), upper = 'shade')
 
 mat = cov(df_test) # 공분산
 
@@ -36,6 +30,7 @@ det(mat - eig$values*diag(42))
 
 
 pc=princomp(df_test)
+
 pc$scores # 줄인 차원에서는 data가 어떻게 생겼는가? 주성분으로 나타냄
 
 plot(pc$scores[,1], pc$scores[,2]) # 주성분 2가지에 대해 4차원에서 2차원으로 줄여서 보여줌
@@ -46,59 +41,75 @@ pc$loadings # 나온 값들의 곱이 w // 아이겐 벡터랑 같음
 pc$sdev 
 
 summary(pc) # standard deviation -> 아이겐 벨류
-screeplot(pc) # 값들이 확 줄어서 나옴 -> 첫번째 값이 중요함 / 1,2번만 써도 될수도?
+screeplot(pc, type = 'l') # 값들이 확 줄어서 나옴 -> 첫번째 값이 중요함 / 1,2번만 써도 될수도?
 
-################### 아래부터는 scale만 추가됨 딱히 다른건 없음 ###################
+# 다른 방법의 pca
+pc2=prcomp(df_test, center = T, scale = T)
+
+pc2
+
+plot(pc2, type = 'l')
+
+summary(pc2) # cumulative Proportion이 누적 설명력 // pc13정도부터 80%이상 설명가능
+
+
+g = ggbiplot(pc2, choices = c(1,2), obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE )
+g = g + scale_color_discrete(name="")
+g = g + theme(legend.direction = 'horizontal', legend.position = 'top')
+g
+
+## scale 안하고...
+
+pc3=prcomp(df_test, center = T, scale = F)
+
+pc3
+
+plot(pc3, type = 'l')
+
+summary(pc3) # pc2 부터 88.47% 설명
+
+g1 = ggbiplot(pc3, choices = c(1,2), obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE )
+g1 = g1 + scale_color_discrete(name="")
+g1 = g1 + theme(legend.direction = 'horizontal', legend.position = 'top')
+g1
+
+pc3$x[,1] # pc1
+pc3$x[,2] # pc2
+
+
 ##
-## scale 방법은 min max
-## min max 컬럼마다 독립 시행
-## Normalization은 원래 아무때나 사용가능한 것은 아님
-## 컬럼마다 상관관계가 큰 경우가 많은데 normalization을 하는 경우 
-## 기존의 상관관계가 무너질 수 있음
-##
-##################################################################################
+fit = mset_regress(df_tr, df_tr)
+fit$residual_tr
+fit$residual_ts[,42]
 
-# min max 기본 정의
-nor_minmax = function(x){
-  result = (x - min(x)) / (max(x) - min(x))
-  return(result)
-} # 이거 안됨 전체 기준으로 min max가됨
 
-min_max = function(x){
-  k = matrix(0,nrow = nrow(x), ncol = ncol(x))
-  for (i in 1:ncol(x)) { 
-    result = (x[i]-min(x[i])) / (max(x[i])-min(x[i]))
-    k[,i] = result
-    
-  }
-  return (k)
+# par(mfrow = c(42,1))
+# for (i in 1:ncol(df_tr)) {
+#   plot(fit$residual_ts[,i], col = 'blue', lwd = 2, type = 'o')
+#   ucl = bootlimit(fit$residual_tr[,i],0.1,100)
+#   lcl = bootlimit(fit$residual_tr[,i],0.9,100)
+#   
+#   abline(h = c(ucl, lcl), col = 'red', lwd = 2)
+# }
+# plot(fit$residual_ts[1,2]) # 코드 상 오류는 없는데 너무 많아서 plot에 못들어감 pca통해서 variable 줄이고 plot 찍으면 볼 수 있음
+
+# 아래코드는 변수 3개만 추출해서 돌린건데 잘 돌아감
+
+#par(mfrow = c(1,1))
+par(mfrow = c(3,1))
+for (i in 1:3) {
+  plot(fit$residual_ts[,i], col = 'blue', type = 'o')
+  ucl = bootlimit(fit$residual_tr[,i],0.1,100)
+  lcl = bootlimit(fit$residual_tr[,i],0.9,100)
+  
+  abline(h = c(ucl, lcl), col = 'red')
 }
 
-df3 = scale(df_test2)
-
-min_max(df_test2)
-
-df2 = nor_minmax(df_test2)
-
-cor(df3)
-
-mat2 = cov(df3)
-
-eig2 = eigen(mat3)
-
-c = eig2$values 
-
-det(mat3 - eig2$values*diag(42)) 
-
-pc2=princomp(df_test2)
-
-pc2$scores 
-
-biplot(pc2) 
-
-pc$loadings 
-
-pc$sdev 
-
-summary(pc) 
-screeplot(pc) 
+# pca 한거(pc1, pc2) 양측 검증 / 하긴했는데 무슨 의미인지 모르겠음..
+fit2 = mset_regress(as.matrix(pc3$x[,1]), as.matrix(pc3$x[,1]))
+fit2$residual_tr
+fit2$residual_ts
+plot(fit2$residual_ts, col = 'blue', type = 'o')
+ucl2 = bootlimit(fit2$residual_tr, 0.1, 100)
+lcl2 = bootlimit(fit2$residual_tr, 0.9, 100)
+abline(h = c(ucl2, lcl2), col = 'red')
