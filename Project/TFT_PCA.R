@@ -1,20 +1,26 @@
 ###################
 ##  TFT PCA분석  ##
 ###################
-#install_github("devtools")
-#install.packages("DAAG")
-#install_github("vqv/ggbiplot")
+# install.packages("devtools")
+# library(devtools)
+# install.packages("DAAG")
+# install_github("vqv/ggbiplot")
 
 library(rgl)
 library(ggbiplot)
 library(ggplot2)
-library(plotly)
 library(corrplot)
 
+source("C://Users/user/github/Function/R/msetRegression.R")
+df = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph1.csv", fileEncoding = 'CP949') # train
+df2 = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph2.csv", fileEncoding = 'CP949') # normal test
+df3 = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph2_out.csv", fileEncoding = 'CP949') # abnormal test
 
-df = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph1.csv",header = T, fileEncoding = 'CP949')
+df_tr = df[,8:49] # 필요 정보만 select
+df_te = df2[,8:49] # 필요 정보만 select
+df_te_2 = df3[,8:49] # 필요 정보만 select
 
-head(df)
+te = rbind(df_te, df_te_2,df_te)
 
 df_test = df[,8:49] # PCA set
 df_test2 = df[,8:49] # Normalization PCA set
@@ -118,11 +124,9 @@ ucl2 = bootlimit(fit2$residual_tr, 0.1, 100)
 lcl2 = bootlimit(fit2$residual_tr, 0.9, 100)
 abline(h = c(ucl2, lcl2), col = 'red')
 
-pca_plotly <- plot_ly(as.data.frame(pc3$x), x = ~PC1, y = ~PC2, z = ~PC3 ) %>% add_markers()
-pca_plotly
-
 x <- pc3$x[,1]
 y <- pc3$x[,2]
 z <- pc3$x[,3]
 
 plot3d(x,y,z, col = rainbow(1000))
+
