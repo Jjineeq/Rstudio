@@ -20,7 +20,7 @@ df_tr = df[,8:49] # 필요 정보만 select
 df_te = df2[,8:49] # 필요 정보만 select
 df_te_2 = df3[,8:49] # 필요 정보만 select
 
-te = rbind(df_te, df_te_2,df_te)
+te = rbind(df_te, df_te_2)
 
 df_test = df[,8:49] # PCA set
 df_test2 = df[,8:49] # Normalization PCA set
@@ -68,30 +68,12 @@ g = g + scale_color_discrete(name="")
 g = g + theme(legend.direction = 'horizontal', legend.position = 'top')
 g
 
-## scale 안하고...
-
-pc3=prcomp(df_test, center = T, scale = F)
-
-pc3
-
-plot(pc3, type = 'l')
-
-summary(pc3) # pc2 부터 88.47% 설명
-
-g1 = ggbiplot(pc3, choices = c(1,2), obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE )
-g1 = g1 + scale_color_discrete(name="")
-g1 = g1 + theme(legend.direction = 'horizontal', legend.position = 'top')
-g1
-
-pc3$x[,1] # pc1
-pc3$x[,2] # pc2
-
 
 ##
 fit = mset_regress(df_tr, df_tr)
 fit$residual_tr
 fit$residual_ts[,42]
-
+plot(fit$residual_ts)
 
 # par(mfrow = c(42,1))
 # for (i in 1:ncol(df_tr)) {
@@ -124,9 +106,23 @@ ucl2 = bootlimit(fit2$residual_tr, 0.1, 100)
 lcl2 = bootlimit(fit2$residual_tr, 0.9, 100)
 abline(h = c(ucl2, lcl2), col = 'red')
 
-x <- pc3$x[,1]
-y <- pc3$x[,2]
-z <- pc3$x[,3]
+x <- pc2$x[,1]
+y <- pc2$x[,2]
+z <- pc2$x[,3]
 
 plot3d(x,y,z, col = rainbow(1000))
+plot(x,y)
 
+ir
+ir_mset = mset_regress(ir[1:50,],ir)
+
+ir_mset$residual_tr
+
+ir_mat = matrix(0,nrow(ir),1)
+for(i in 1:nrow(ir_mset$residual_tr)){
+  ir_mat[i,] = as.matrix(ir_mset$residual_ts[i,])%*%solve(cov(ir))%*%t(as.matrix(ir_mset$residual_ts[i,]))
+}
+as.matrix(ir_mset$residual_ts[1,])%*%solve(cov(ir))%*%t(as.matrix(ir_mset$residual_ts[1,]))
+plot(ir_mat)
+
+iris[,5]
