@@ -54,7 +54,7 @@ summary(pc) # standard deviation -> 아이겐 벨류
 screeplot(pc, type = 'l') # 값들이 확 줄어서 나옴 -> 첫번째 값이 중요함 / 1,2번만 써도 될수도?
 
 # 다른 방법의 pca
-pc2=prcomp(df_test, center = T, scale = T)
+pc2=prcomp(df_test, center = T,  scale = T)
 
 pc2
 
@@ -87,7 +87,7 @@ plot(fit$residual_ts)
 
 # 아래코드는 변수 3개만 추출해서 돌린건데 잘 돌아감
 
-#par(mfrow = c(1,1))
+# par(mfrow = c(1,1))
 par(mfrow = c(3,1))
 for (i in 1:3) {
   plot(fit$residual_ts[,i], col = 'blue', type = 'o')
