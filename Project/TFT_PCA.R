@@ -105,6 +105,7 @@ plot(fit2$residual_ts, col = 'blue', type = 'o')
 ucl2 = bootlimit(fit2$residual_tr, 0.1, 100)
 lcl2 = bootlimit(fit2$residual_tr, 0.9, 100)
 abline(h = c(ucl2, lcl2), col = 'red')
+summary(pc)
 
 x <- pc2$x[,1]
 y <- pc2$x[,2]
