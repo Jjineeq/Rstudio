@@ -25,6 +25,9 @@ te = rbind(df_te, df_te_2)
 df_test = df[,8:49] # PCA set
 df_test2 = df[,8:49] # Normalization PCA set
 
+df_test5 = cbind(df[,1], df_test)
+
+
 cor(df_test) # 상관관계
 corrplot(cor(df_test))
 corrplot.mixed(cor(df_test), upper = 'shade')
@@ -53,6 +56,11 @@ pc$sdev
 summary(pc) # standard deviation -> 아이겐 벨류
 screeplot(pc, type = 'l') # 값들이 확 줄어서 나옴 -> 첫번째 값이 중요함 / 1,2번만 써도 될수도?
 
+k = ggbiplot(pc, choices = c(1,2), obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE )
+k = k + scale_color_discrete(name="")
+k = k + theme(legend.direction = 'horizontal', legend.position = 'top')
+k
+
 # 다른 방법의 pca
 pc2=prcomp(df_test, center = T,  scale = T)
 
@@ -70,10 +78,10 @@ g
 
 
 ##
-fit = mset_regress(df_tr, df_tr)
-fit$residual_tr
-fit$residual_ts[,42]
-plot(fit$residual_ts)
+# fit = mset_regress(df_tr, df_tr)
+# fit$residual_tr
+# fit$residual_ts[,42]
+# plot(fit$residual_ts)
 
 # par(mfrow = c(42,1))
 # for (i in 1:ncol(df_tr)) {
@@ -97,11 +105,12 @@ for (i in 1:3) {
   abline(h = c(ucl, lcl), col = 'red')
 }
 
+pc$scores
 # pca 한거(pc1, pc2) 양측 검증 / 하긴했는데 무슨 의미인지 모르겠음..
-fit2 = mset_regress(as.matrix(pc3$x[,1]), as.matrix(pc3$x[,1]))
+fit2 = mset_regress(as.matrix(pc$scores[,1]), as.matrix(pc$scores[,1]))
 fit2$residual_tr
 fit2$residual_ts
-plot(fit2$residual_ts, col = 'blue', type = 'o')
+plot(fit2$residual_ts, col = 'blue')
 ucl2 = bootlimit(fit2$residual_tr, 0.1, 100)
 lcl2 = bootlimit(fit2$residual_tr, 0.9, 100)
 abline(h = c(ucl2, lcl2), col = 'red')
@@ -110,9 +119,35 @@ summary(pc)
 x <- pc2$x[,1]
 y <- pc2$x[,2]
 z <- pc2$x[,3]
+o = df[,1]
+q = list(o,x,y,z)
+q_mat <- matrix(unlist(q), ncol =4)
+q_mat = as.data.frame(q_mat)
+q_mat$V1
 
-plot3d(x,y,z, col = rainbow(1000))
-plot(x,y)
+cols = c('blue', 'red','skyblue','green')
+
+plot3d(q_mat[,2],q_mat[,3],q_mat[,4], 
+       col = cols[as.factor(q_mat$V1)],
+       xlab = 'pc1',
+       ylab = 'pc2',
+       zlab = 'pc3',
+       
+       )
+
+#legend('topright', legend = paste('Tool', c('1','2','3','4')))
+
+# pca해서 3차원 표현plot(x,y) 
+
+library(plotly)
+
+g1 = plot_ly(x = q_mat[,2], y = q_mat[,3], z = q_mat[,4], 
+             type = "scatter3d", 
+             mode = 'markers' ,
+             color = cols[as.factor(q_mat$V1)] )
+g1
+
+plot(x,y) # pca해서 2차원 표현
 
 ir
 ir_mset = mset_regress(ir[1:50,],ir)

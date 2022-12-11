@@ -34,7 +34,7 @@ df_te_2 = df3[,8:49]
 
 # normal, abnormal test bind -> total test
 te = rbind(df_te, df_te_2)
-
+tk = rbind(df_tr, te)
 
 ###################
 #### ginv 풀이 ####
@@ -43,9 +43,12 @@ te = rbind(df_te, df_te_2)
 # Hotelling T square 진행 -> 다변량 t 검정
 # 집단간 차이가 없다고 가정 -> 다음에 확인해볼게요 / 무조건 귀무가설 채택되긴 할겁니다.
 df_t2 = t_square(df_tr, te, 0.05)
+df_t2_2 = t_square(df_tr, tk, 0.05)
+
 
 # 데이터 확인
 plot(df_t2$Tsq_mat, type = 'o', ylim = c(0,600)) 
+plot(df_t2_2$Tsq_mat, type = 'l', ylim = c(0,700), xlab = 'time', ylab = 'T-square') 
 
 # t square으로 나온 limit plot
 abline(h = c(df_t2$CL), col = 'red')
@@ -71,7 +74,7 @@ for (i in 1:1000) {
 }
 
 # 시각화
-plot(mat[,2:3], xlab = 'alpha error', ylab = 'beta error')
+plot(mat[,2:3], xlab = 'alpha error', ylab = 'beta error', )
 
 ################################################
 
@@ -149,3 +152,4 @@ points(mat2[,2:3],col='green',type='o') # cbm ginv 진행
 points(mat3[,2:3],col='blue',type='o') # hostelling t-square solve 진행
 points(mat4[,2:3],col='red',type='o') # cbm solve 진행
 legend('topright', legend = c('t-square ginv','cbm ginv','t-square solve','cbm solve'), fill =  c('black', 'green','blue','red'))
+legend('topright', legend = c('t-square ginv','t-square solve'), fill =  c('black', 'blue'))
