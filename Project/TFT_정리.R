@@ -45,6 +45,7 @@ tk = rbind(df_tr, te)
 df_t2 = t_square(df_tr, te, 0.05)
 df_t2_2 = t_square(df_tr, tk, 0.05)
 
+df_t2 = t_square(df_tr, df_tr, 0.05)
 
 # 데이터 확인
 plot(df_t2$Tsq_mat, type = 'o', ylim = c(0,600)) 
