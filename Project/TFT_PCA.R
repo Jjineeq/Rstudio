@@ -29,9 +29,22 @@ df_test5 = cbind(df[,1], df_test)
 
 
 cor(df_test) # 상관관계
-corrplot(cor(df_test))
+corrplot.mixed(cor(df_test), cl.pos = 'n', tl.pos = 'n')
 corrplot.mixed(cor(df_test), upper = 'shade')
 
+##
+
+#install.packages('psych')
+library(psych)
+cor_test_mat = corr.test(df_test)$p
+
+#png(paste0("TFT cor plot_1.png"))
+corrplot(cor(df_test), p.mat = cor_test_mat, cl.pos = 'n', tl.pos = 'n' )
+corrplot(cor(df_test),method = 'number', cl.pos = 'n', tl.pos = 'n' )
+
+dev.off()
+
+##
 mat = cov(df_test) # 공분산
 
 eig = eigen(mat)
