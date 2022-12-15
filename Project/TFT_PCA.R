@@ -12,15 +12,16 @@ library(ggplot2)
 library(corrplot)
 
 source("C://Users/user/github/Function/R/msetRegression.R")
-df = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph1.csv", fileEncoding = 'CP949') # train
-df2 = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph2.csv", fileEncoding = 'CP949') # normal test
-df3 = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph2_out.csv", fileEncoding = 'CP949') # abnormal test
+df = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph1_bytime.csv", fileEncoding = 'CP949') # train
+df2 = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph2_in.csv", fileEncoding = 'CP949') # normal test
+df3 = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph2_out.csv", fileEncoding = 'CP949') # abnormal test
 
 df_tr = df[,8:49] # 필요 정보만 select
 df_te = df2[,8:49] # 필요 정보만 select
 df_te_2 = df3[,8:49] # 필요 정보만 select
 
 te = rbind(df_te, df_te_2)
+tk = rbind(df_tr, df_te)
 
 df_test = df[,8:49] # PCA set
 df_test2 = df[,8:49] # Normalization PCA set
@@ -83,11 +84,23 @@ plot(pc2, type = 'l')
 
 summary(pc2) # cumulative Proportion이 누적 설명력 // pc13정도부터 80%이상 설명가능
 
+pc10=prcomp(te, center = T,  scale = T)
+
+pc10
+
+plot(pc10, type = 'l')
+
+summary(pc10) # cumulative Proportion이 누적 설명력 // pc13정도부터 80%이상 설명가능
 
 g = ggbiplot(pc2, choices = c(1,2), obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE )
 g = g + scale_color_discrete(name="")
 g = g + theme(legend.direction = 'horizontal', legend.position = 'top')
 g
+
+h = ggbiplot(pc10, choices = c(1,2), obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE )
+h = h + scale_color_discrete(name="")
+h = h + theme(legend.direction = 'horizontal', legend.position = 'top')
+h
 
 
 ##
@@ -119,15 +132,15 @@ for (i in 1:3) {
 }
 
 pc$scores
-# pca 한거(pc1, pc2) 양측 검증 / 하긴했는데 무슨 의미인지 모르겠음..
-fit2 = mset_regress(as.matrix(pc$scores[,1]), as.matrix(pc$scores[,1]))
-fit2$residual_tr
-fit2$residual_ts
-plot(fit2$residual_ts, col = 'blue')
-ucl2 = bootlimit(fit2$residual_tr, 0.1, 100)
-lcl2 = bootlimit(fit2$residual_tr, 0.9, 100)
-abline(h = c(ucl2, lcl2), col = 'red')
-summary(pc)
+# # pca 한거(pc1, pc2) 양측 검증 / 하긴했는데 무슨 의미인지 모르겠음..
+# fit2 = mset_regress(as.matrix(pc$scores[,1]), as.matrix(pc$scores[,1]))
+# fit2$residual_tr
+# fit2$residual_ts
+# plot(fit2$residual_ts, col = 'blue')
+# ucl2 = bootlimit(fit2$residual_tr, 0.1, 100)
+# lcl2 = bootlimit(fit2$residual_tr, 0.9, 100)
+# abline(h = c(ucl2, lcl2), col = 'red')
+# summary(pc)
 
 x <- pc2$x[,1]
 y <- pc2$x[,2]
@@ -136,7 +149,6 @@ o = df[,1]
 q = list(o,x,y,z)
 q_mat <- matrix(unlist(q), ncol =4)
 q_mat = as.data.frame(q_mat)
-q_mat$V1
 
 cols = c('blue', 'red','skyblue','green')
 
@@ -147,6 +159,33 @@ plot3d(q_mat[,2],q_mat[,3],q_mat[,4],
        zlab = 'pc3',
        
        )
+
+x_ <- pc10$x[,1]
+y_ <- pc10$x[,2]
+z_ <- pc10$x[,3]
+o_ = df2[,1]
+q_ = list(o_,x_,y_,z_)
+q_mat_ <- matrix(unlist(q_), ncol =4)
+q_mat_ = as.data.frame(q_mat_)
+
+plot(z_,y_ )
+
+cols = c('blue', 'red','skyblue','green')
+
+plot3d(q_mat_[,2],q_mat_[,3],q_mat_[,4], 
+       col = cols[as.factor(q_mat_$V1)],
+       xlab = 'pc1',
+       ylab = 'pc2',
+       zlab = 'pc3',
+        )
+
+plot3d(q_mat_[,2],q_mat_[,3],q_mat_[,4], 
+       #col = cols[as.factor(q_mat_$V1)],
+       xlab = 'pc1',
+       ylab = 'pc2',
+       zlab = 'pc3',
+)
+
 
 #legend('topright', legend = paste('Tool', c('1','2','3','4')))
 

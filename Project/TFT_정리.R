@@ -23,9 +23,9 @@ library(pracma)
 library(autoencoder)
 
 # 데이터 불러오기
-df = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph1.csv", fileEncoding = 'CP949') # train
-df2 = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph2.csv", fileEncoding = 'CP949') # normal test
-df3 = read.csv("C:/Users/user/github/Anomaly-Detection/data/ph2_out.csv", fileEncoding = 'CP949') # abnormal test
+df = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph1_bytime.csv", fileEncoding = 'CP949') # train
+df2 = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph2_in.csv", fileEncoding = 'CP949') # normal test
+df3 = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph2_out.csv", fileEncoding = 'CP949') # abnormal test
 
 # 필요 없는 데이터 제거
 df_tr = df[,8:49] 
@@ -152,5 +152,13 @@ plot(mat[,2:3], xlab = 'alpha error', ylab = 'beta error', main = '유의 수준
 points(mat2[,2:3],col='green',type='o') # cbm ginv 진행
 points(mat3[,2:3],col='blue',type='o') # hostelling t-square solve 진행
 points(mat4[,2:3],col='red',type='o') # cbm solve 진행
+points(x=c(0,1), y=c(0,1), type ='l')
 legend('topright', legend = c('t-square ginv','cbm ginv','t-square solve','cbm solve'), fill =  c('black', 'green','blue','red'))
-legend('topright', legend = c('t-square ginv','t-square solve'), fill =  c('black', 'blue'))
+
+
+# csv
+
+# write.csv(mat,"C:\\Users\\User\\github\\data\\TFTLCD\\t-square_ginv.csv",row.names = FALSE)
+# write.csv(mat2,"C:\\Users\\User\\github\\data\\TFTLCD\\cbm_ginv.csv",row.names = FALSE)
+# write.csv(mat3,"C:\\Users\\User\\github\\data\\TFTLCD\\t-square_solve.csv",row.names = FALSE)
+# write.csv(mat4,"C:\\Users\\User\\github\\data\\TFTLCD\\cbm_solve.csv",row.names = FALSE)
