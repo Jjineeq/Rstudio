@@ -1,7 +1,14 @@
+###################
+##  TFT SOM분석  ##
+###################
+## SOM = Self Organizing Map
 
-df = read.csv("C:/Users/jangs/OneDrive/Documents/GitHub/Anomaly-Detection/data/ph1.csv", fileEncoding = 'CP949') # train
-df2 = read.csv("C:/Users/jangs/OneDrive/Documents/GitHub/Anomaly-Detection/data/ph2.csv", fileEncoding = 'CP949') # normal test
-df3 = read.csv("C:/Users/jangs/OneDrive/Documents/GitHub/Anomaly-Detection/data/ph2_out.csv", fileEncoding = 'CP949') # abnormal test
+#install.packages("kohonen")
+library(kohonen)
+
+df = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph1_bytime.csv", fileEncoding = 'CP949') # train
+df2 = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph2_in.csv", fileEncoding = 'CP949') # normal test
+df3 = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph2_out.csv", fileEncoding = 'CP949') # abnormal test
 
 head(df)
 
@@ -16,9 +23,7 @@ df_te_2 = df3[,8:49] # 필요 정보만 select
 te = rbind(df_te, df_te_2)
 
 
-#install.packages("kohonen")
 
-library(kohonen)
 #grid에서 topology 방법은 rectangular or hexagonal
 
 #hexagonal

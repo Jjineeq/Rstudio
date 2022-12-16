@@ -4,6 +4,9 @@ library(pracma)
 library(MASS)
 library(reshape)
 
+source("C:/Users/User/github/Function/R/msetRegression.R")
+
+
 df = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph1_bytime.csv", fileEncoding = 'CP949') # train
 df2 = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph2_in.csv", fileEncoding = 'CP949') # normal test
 df3 = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph2_out.csv", fileEncoding = 'CP949') # abnormal test
@@ -27,25 +30,17 @@ colnames(all)
 all = rename(all,c('df2[, 1]' = 'TOOL_NAME'))
 all = rename(all,c('df2[, 6]' = 'TIME_STAMP'))
 
-write.csv(all,"C:\\Users\\User\\github\\data\\TFTLCD\\TFT_EDA_ALL.csv")
+## 사진 저장하기
 
+#setwd('C:\\Users\\User\\github\\Rstudio\\Project')
 
-which(all$`df2[, 1]` == 'Tool1')
-which(all$`df2[, 1]` == 'Tool2')
-which(all$`df2[, 1]` == 'Tool3')
-which(all$`df2[, 1]` == 'Tool4')
-
-
-
-setwd('C:\\Users\\User\\github\\Rstudio\\Project')
-
-for (i in 2:43) {
-  train = as.matrix(df_tr[,i])
-  test = as.matrix(all[,i])
-  msetLR = mset_regress(train, test)
-  trDegradation = degradation_model(msetLR$residual_tr)
-  tsDegradation = degradation_model(msetLR$residual_ts)
-  png(paste0("sensor ",colnames(df_tr)[i]," all.png"))
-  plot(tsDegradation)
-  dev.off()
-}
+# for (i in 2:43) {
+#   train = as.matrix(df_tr[,i])
+#   test = as.matrix(all[,i])
+#   msetLR = mset_regress(train, test)
+#   trDegradation = degradation_model(msetLR$residual_tr)
+#   tsDegradation = degradation_model(msetLR$residual_ts)
+#   png(paste0("sensor ",colnames(df_tr)[i]," all.png"))
+#   plot(tsDegradation)
+#   dev.off()
+# }

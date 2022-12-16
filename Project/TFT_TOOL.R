@@ -1,6 +1,13 @@
-## tool별로 t2 진행
+#########################
+###    T2 by Tool     ###
+#########################
+
+options(warn = -1) # 경고끄기
 library(MASS)
 library(pracma)
+source("C:/Users/User/github/Function/R/t_square.R")
+source("C:/Users/User/github/Function/R/bootstrap1.R")
+
 
 df = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph1_bytime.csv", fileEncoding = 'CP949') # train
 df2 = read.csv("C:\\Users\\User\\github\\data\\TFTLCD\\ph2_in.csv", fileEncoding = 'CP949') # normal test
@@ -58,7 +65,7 @@ for (i in 1:1000) {
   mat_1[i,3] = length(which(t2$Tsq_mat[334:479] < s2))/145 # beta error = 비정상인데 정상으로 나오는 것
 }
 
-plot(mat_1[,2:3], xlab = 'alpha error', ylab = 'beta error', )
+plot(mat_1[,2:3], xlab = 'alpha error', ylab = 'beta error',type = 'o' )
 
 s1_2 = t_square_solve(train2, train2, 0.05)
 t2_2 = t_square_solve(train2, test2, 0.05) # 370 244 
@@ -101,14 +108,22 @@ for (i in 1:1000) {
 plot(mat_4[,2:3], xlab = 'alpha error', ylab = 'beta error', )
 
 
-
+par(mfrow = c(1, 1))
 plot(mat_1[,2:3],type = 'o', xlab = 'alpha error', ylab = 'beta error', main = '유의 수준에 따른 error') 
 points(mat_2[,2:3],col='green',type='o') 
 points(mat_3[,2:3],col='orange',type='o') 
 points(mat_4[,2:3],col='purple',type='o')
-points(mat2[,2:3],col='red',type='o')
-points(mat4[,2:3],col='blue',type='o')
+points(mat3[,2:3],col='red',type='o') # TFT_정리.R 먼저 실행해야됩니다
+points(mat4[,2:3],col='blue',type='o') # TFT_정리.R 먼저 실행해야됩니다
 points(x=c(0,1), y=c(0,1), type ='l')
 legend('topright', 
        legend = c('TOOL1','TOOL2','TOOL3','TOOL4','T-square','CBM'), 
        fill =  c('black', 'green','orange','purple','red','blue'))
+
+
+# csv
+
+# write.csv(mat_1,"C:\\Users\\User\\github\\data\\TFTLCD\\t-square_tool1.csv",row.names = FALSE)
+# write.csv(mat_2,"C:\\Users\\User\\github\\data\\TFTLCD\\t-square_tool2.csv",row.names = FALSE)
+# write.csv(mat_3,"C:\\Users\\User\\github\\data\\TFTLCD\\t-square_tool3.csv",row.names = FALSE)
+# write.csv(mat_4,"C:\\Users\\User\\github\\data\\TFTLCD\\t-square_tool4.csv",row.names = FALSE)
