@@ -26,13 +26,13 @@ test4 = test[test$TOOL_NAME == 'P8TCVD060309', 9:50]
 ## Isolation Forest
 
 # training data로 학습
-iforest1 = isolationForest$new()
+iforest1 = isolationForest$new(max_depth = 8,num_trees = 500, sample_size = 256)
 iforest1$fit(train1)
-iforest2 = isolationForest$new()
+iforest2 = isolationForest$new(max_depth = 8,num_trees = 500, sample_size = 256)
 iforest2$fit(train2)
-iforest3 = isolationForest$new()
+iforest3 = isolationForest$new(max_depth = 8,num_trees = 500, sample_size = 256)
 iforest3$fit(train3)
-iforest4 = isolationForest$new()
+iforest4 = isolationForest$new(max_depth = 8,num_trees = 500, sample_size = 256)
 iforest4$fit(train4)
 
 # 학습된 모델에 testing data 적용

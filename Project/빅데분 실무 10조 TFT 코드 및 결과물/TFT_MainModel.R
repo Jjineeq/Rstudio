@@ -87,7 +87,7 @@ mat2 = matrix(0,1000,3)
 
 # cbm 한번만 구하면 됩니다.
 # cbm도 k에따른 error 구할 수 있긴한데 오래걸려서 일단 제외했습니다.
-# 차주에 이야기해보죠..
+
 s3 = cbm(df_tr, df_tr, 0.05, 5)
 tft_cbm = cbm(df_tr, te, 0.05, 3)
 
